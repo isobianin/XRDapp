@@ -1,6 +1,6 @@
 # What is XRDapp
 
-<img src="media/icon_main.png" width="48px" class="center" align="left"/>
+<img src="media/icon_main.png" width="60px" class="center" align="left"/>
 
 XRDapp is a data visualisation tool that aims to streamline the workflow of X-ray diffraction (XRD) analysis. This project is developed for the Open University, School of Engineering and Innovation in collaboration with [James Bowen](https://www.linkedin.com/in/bowenjames/) and [Matthew Kershaw](https://www.linkedin.com/in/matt-kershaw-47634b57/). 
 # Supported file formats
