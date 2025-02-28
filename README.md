@@ -29,25 +29,43 @@ XRDapp works with the following formats (powered by [xylib](https://github.com/w
 - load temperature values as a separate file to go hand-in-hand with the current data set
 - customise the viewing window (data points cursor, minor and major grids, change axis spacing values, change font size, etc.)
 # Buttons
-- <img src="media/mpl_home_large.png" width="24px" /> - Home: get back to the original view ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
-- <img src="media/import-content.png" width="24px" /> - Import Data: when selected, navigate to the folder with data and select files to be loaded into XRDapp
-- <img src="media/temperature-low.png" width="24px" /> - Load Temperatures: an optional feature which allows XRDapp to load a .txt file with temperatures that were used during the XRD run
-- <img src="media/stretch-vertically.png" width="24px" /> - Fit Screen: fit the current curve into the screen
-- <img src="media/cursor.png" width="24px" /> - Toggle Cursor: turns on or off a cursor that snaps to the closest data point
-- <img src="media/toggle-list-icon.png" width="24px" /> - Toggle File List: controls visibility of the loaded files list
-- <img src="media/toggle-grid-icon.png" width="24px" /> - Toggle Grid: activates minor and major grids that spans vertically and horizontally. Each can be individually toggled on or off
-- <img src="media/set-ticks-icon.png" width="24px" /> - Set Ticks: set spacing between x or y axis divisions
-- <img src="media/font-size-icon.png" width="24px" /> - Set Font Size: set font size of each individual text element
-- <img src="media/mpl_back_large.png" width="24px" /> - Previous View: go back to the previous view of the current curve ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
-- <img src="media/mpl_forward_large.png" width="24px" /> - Next View: go to the view you had before clicking "Previous view" ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
-- <img src="media/mpl_move_large.png" width="24px" /> - Pan View: move the curve inside the viewing window (matplotlib toolbar function)
-- <img src="media/mpl_zoom.png" width="24px" /> - Zoom: select an area to zoom into ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
-- <img src="media/mpl_axis.png" width="24px" /> - Edit Axis: edit min and max shown values, change the colour of the curve, change text entries for axes, change line style and choose markers ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
-- <img src="media/mpl_filesave_large.png" width="24px" /> - Save Figure: take a screencap of the current view ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
+<img src="media/mpl_home_large.png" width="24px" /> - Home: get back to the original view ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
 
-- <img src="media/info-icon.png" width="24px" /> - App Info: information regarding the current version, developers and contact details
-- <img src="media/convert-icon.png" width="24px" /> - Convert Data: convert the loaded data into .txt file. XRDapp will create a new folder in the same directory as the loaded files and place converted files in it
-- <img src="media/clear-data-icon.png" width="24px" /> - Clear Data: clear the loaded data cache
+<img src="media/import-content.png" width="24px" /> - Import Data: when selected, navigate to the folder with data and select files to be loaded into XRDapp
+
+<img src="media/temperature-low.png" width="24px" /> - Load Temperatures: an optional feature which allows XRDapp to load a .txt file with temperatures that were used during the XRD run
+
+<img src="media/stretch-vertically.png" width="24px" /> - Fit Screen: fit the current curve into the screen
+
+<img src="media/cursor.png" width="24px" /> - Toggle Cursor: turns on or off a cursor that snaps to the closest data point
+
+<img src="media/toggle-list-icon.png" width="24px" /> - Toggle File List: controls visibility of the loaded files list
+
+<img src="media/toggle-grid-icon.png" width="24px" /> - Toggle Grid: activates minor and major grids that spans vertically and horizontally. Each can be individually toggled on or off
+
+<img src="media/set-ticks-icon.png" width="24px" /> - Set Ticks: set spacing between x or y axis divisions
+
+<img src="media/font-size-icon.png" width="24px" /> - Set Font Size: set font size of each individual text element
+
+<img src="media/mpl_back_large.png" width="24px" /> - Previous View: go back to the previous view of the current curve ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
+
+<img src="media/mpl_forward_large.png" width="24px" /> - Next View: go to the view you had before clicking "Previous view" ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
+
+<img src="media/mpl_move_large.png" width="24px" /> - Pan View: move the curve inside the viewing window (matplotlib toolbar function)
+
+<img src="media/mpl_zoom.png" width="24px" /> - Zoom: select an area to zoom into ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
+
+<img src="media/mpl_axis.png" width="24px" /> - Edit Axis: edit min and max shown values, change the colour of the curve, change text entries for axes, change line style and choose markers ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
+
+<img src="media/mpl_filesave_large.png" width="24px" /> - Save Figure: take a screencap of the current view ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
+
+
+<img src="media/info-icon.png" width="24px" /> - App Info: information regarding the current version, developers and contact details
+
+<img src="media/convert-icon.png" width="24px" /> - Convert Data: convert the loaded data into .txt file. XRDapp will create a new folder in the same directory as the loaded files and place converted files in it
+
+<img src="media/clear-data-icon.png" width="24px" /> - Clear Data: clear the loaded data cache
+
 # Using XRDapp
 Start using XRDapp by pressing <img src="media/import-content.png" width="24px" /> and loading the data. When the data is loaded, you can browse through XRD curves with a help of up and down arrow buttons on your keyboard or by clicking the filename in the loaded files list window. Use <img src="media/temperature-low.png" width="24px" /> to load a .txt file with temperature values, which will be displayed above the viewing window. To zoom in to an area of interest, use <img src="media/mpl_zoom.png" width="24px" />. If the given curve has small intensity (y-axis value), press <img src="media/stretch-vertically.png" width="24px" /> to fit it to the screen. Pressing <img src="media/mpl_home_large.png" width="24px" /> automatically rescales everything back to the highest intensity among all loaded files. To convert loaded files into .txt file, press <img src="media/convert-icon.png" width="24px" />, which will create a folder called "XRDapp converted" in the folder where the data was loaded from. Press either <img src="media/clear-data-icon.png" width="24px" /> to clear the data or <img src="media/import-content.png" width="24px" /> to load different files.
 
