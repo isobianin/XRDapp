@@ -83,7 +83,7 @@ Video demonstration of the basic XRDapp functionality:
 
 ![](media/video/demo.gif)
 
-High resolution video is available in [.mp4 format](media/video/demo.mp4).
+High resolution video is available in [.mp4 format](media/video/).
 
 # Modifying code
 The code provided in this repository can be modified. It is important to note that to ensure that the code can run smoothly on your machine, you need to install [xylib](https://github.com/wojdyr/xylib/tree/master). After that, to build your own executable file, use the following command:
