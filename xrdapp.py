@@ -1,3 +1,5 @@
+# The following code utilises xylib library to read and plot XRD data files.
+
 import sys
 import os
 import numpy as np
@@ -8,6 +10,7 @@ from PyQt5.QtGui import QIcon
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
+# https://stackoverflow.com/questions/42251295/file-path-for-pyinstaller-bundled-images
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
@@ -20,16 +23,16 @@ def resource_path(relative_path):
 class CustomToolbar(NavigationToolbar):
     def __init__(self, canvas, parent):
         super().__init__(canvas, parent)
-        # Remove items 6 and 7 from the toolbar
+        # Remove 'Subplots' item from the toolbar
         self.actions()[6].setVisible(False)
-        # self.actions()[7].setVisible(False)
-        # duplicate 'Rescale plot' functionality
+        # Make home button rescale the plot
         self.actions()[0].triggered.disconnect()
         self.actions()[0].triggered.connect(parent.rescale_plot)
-        # Add custom buttons for "Import Data", "Load Temperatures", "Fit Screen", "Toggle Hover", "Clear Data", "Toggle List", "Toggle Grid", and "Set Ticks"
+        # Add custom buttons for "Import Data", "Load Temperatures", "Fit Screen", "Toggle Hover", "Clear Data", "Toggle List", "Toggle Grid", "Set Ticks" and "Set Font Size"
         self.insertAction(self.actions()[1], self.addAction(QIcon(resource_path('media/import-content.png')), 'Import Data', parent.import_data))
         self.insertAction(self.actions()[2], self.addAction(QIcon(resource_path('media/temperature-low.png')), 'Load Temperatures', parent.import_temperatures))
         self.insertAction(self.actions()[3], self.addAction(QIcon(resource_path('media/stretch-vertically.png')), 'Fit Screen', parent.fit_screen))
+        # Checkable action for toggling hover cursor
         self.hover_action = self.addAction(QIcon(resource_path('media/cursor.png')), 'Toggle Cursor', parent.toggle_hover)
         self.insertAction(self.actions()[4], self.hover_action)
         self.hover_action.setCheckable(True)
@@ -40,7 +43,7 @@ class CustomToolbar(NavigationToolbar):
         self.insertAction(self.actions()[7],self.addAction(QIcon(resource_path('media/set-ticks-icon.png')), 'Set Ticks', parent.open_ticks_dialog))
         self.insertAction(self.actions()[8],self.addAction(QIcon(resource_path('media/font-size-icon.png')), 'Set Font Size', parent.open_font_size_dialog))
        
-        # Add a new button for converting files
+        # Add buttons for "App Info", "Convert Data" and "Clear Data"
 
         self.info_action = self.addAction(QIcon(resource_path('media/info-icon.png')), 'App Info', parent.show_info)
         self.addAction(self.info_action)
@@ -214,7 +217,7 @@ class XRDApp(QMainWindow):
         self.canvas.mpl_connect("motion_notify_event", self.on_hover)
 
     def import_data(self):
-        files, _ = QFileDialog.getOpenFileNames(self, 'Select XRD Data Files', '', 'XRD Data Files (*.xy *.raw *.txt *.csv)')
+        files, _ = QFileDialog.getOpenFileNames(self, 'Select XRD Data Files', '', '')
         if files:
             self.clear_data()
             self.fileNames = files
@@ -269,96 +272,60 @@ class XRDApp(QMainWindow):
                     QMessageBox.warning(self, "Conversion Error", f"Error converting {self.fileNames[i]}: {e}")
         QMessageBox.information(self, "Conversion Complete", "Files have been successfully converted.")
         
-
-    # def convert_file(self, opt):
-    #     if opt.INPUT_FILE == '-':
-    #         src = (sys.stdin.buffer if hasattr(sys.stdin, 'buffer') else sys.stdin)
-    #         d = xylib.load_string(src.read(), opt.t)
-    #     else:
-    #         d = xylib.load_file(opt.INPUT_FILE, opt.t or '')
-    #     f = opt.OUTPUT_FILE
-    #     f.write('# exported by XRDapp from a %s file\n' % d.fi.name)
-    #     if not opt.s and d.meta.size():
-    #         self.export_metadata(f, d.meta)
-    #         f.write('\n')
-    #     nb = d.get_block_count()
-    #     for i in range(nb):
-    #         block = d.get_block(i)
-    #         if nb > 1 or block.get_name():
-    #             f.write('\n### block #%d %s\n' % (i, block.get_name()))
-    #         if not opt.s:
-    #             self.export_metadata(f, block.meta)
-    #         ncol = block.get_column_count()
-    #         col_names = [block.get_column(k).get_name() or ('column_%d' % k) for k in range(1, ncol + 1)]
-    #         f.write('# ' + '\t'.join(col_names) + '\n')
-    #         nrow = block.get_point_count()
-    #         for j in range(nrow):
-    #             values = ["%.6f" % block.get_column(k).get_value(j) for k in range(1, ncol + 1)]
-    #             f.write('\t'.join(values) + '\n')
-
-    def read_raw_file(self, fileName, fileIndex, initial_theta, theta_step):
-        try:
-            dataset = xylib.load_file(fileName)
-            col1, col2, meta, start2th, stepsize, nstep = self.extract_file(dataset)
-            if col1 == 0 and col2 == 0:
-                raise ValueError("Failed to extract columns from the file.")
-            data = self.save_as_np(fileName, col2, start2th, stepsize, nstep)
-            initial_theta = None
-            theta_step = None
-            return initial_theta, theta_step, data
-        except RuntimeError as e:
-            with open(fileName, 'rb') as f:
-                header = f.read(6)
-                if header == b'RAW4.0' and fileIndex == 0:
-                    initial_theta, theta_step = self.prompt_for_theta_values()
-                return initial_theta, theta_step, self.handle_raw4_file(fileName, initial_theta, theta_step)
-            raise e
-        
     def read_file(self, fileName, file_index, initial_theta, theta_step):
+        class Opt:
+            def __init__(self, input_file, t):
+                self.INPUT_FILE = input_file
+                self.t = t
+
+        opt = Opt(fileName, '')
+        
         try:
-            d = xylib.load_file(fileName)
-            block = d.get_block(0)
-            col1 = block.get_column(1)
-            col2 = block.get_column(2)
-            x_values = [col1.get_value(i) for i in range(col1.get_point_count())]
-            y_values = [col2.get_value(i) for i in range(col2.get_point_count())]
+            data = self.convert_file_to_data(opt)
+            if data.size == 0:
+                raise ValueError("Zero-size array detected.")
             initial_theta = None
             theta_step = None
-            return initial_theta, theta_step, np.column_stack((x_values, y_values))
-        except RuntimeError as e:
+
+            return initial_theta, theta_step, data
+        
+        except ValueError as e:
             with open(fileName, 'rb') as f:
                 header = f.read(6)
                 if header == b'RAW4.0' and file_index == 0:
                     initial_theta, theta_step = self.prompt_for_theta_values()
-                return initial_theta, theta_step, self.handle_raw4_file(fileName, initial_theta, theta_step)
+                return initial_theta, theta_step, self.parse_raw4_file(fileName, initial_theta, theta_step)
             raise e
-            
-    def extract_file(self, file):
-        print('trying to extract the file')
-        block = file.get_block(0)
-        col1 = block.get_column(1)
-        col2 = block.get_column(2)
-        meta = block.meta
-        keys = []
-        for i in range(0, meta.size()):
-            keys.append(meta.get_key(i))
-        for key in keys:
-            print(key, meta.get(key))
-        if meta.has_key("START_2THETA"):
-            start2th = float(meta.get('START_2THETA'))
-        elif meta.has_key("THETA_START"):
-            start2th = 2 * float(meta.get('THETA_START'))
+    
+    def convert_file_to_data(self, opt):
+        if opt.INPUT_FILE == '-':
+            src = (sys.stdin.buffer if hasattr(sys.stdin, 'buffer') else sys.stdin)
+            d = xylib.load_string(src.read(), opt.t)
         else:
-            return 0, 0, 0, 0, 0, 0
-        if meta.has_key('STEP_SIZE'):
-            stepsize = float(meta.get('STEP_SIZE'))
-        else:
-            stepsize = col1.get_step()
-        if meta.has_key("STEPS"):
-            nstep = float(meta.get('STEPS'))
-        else:
-            nstep = col2.get_point_count()
-        return col1, col2, meta, start2th, stepsize, nstep
+            d = xylib.load_file(opt.INPUT_FILE, opt.t or '')
+
+        data = []
+
+        nb = d.get_block_count()
+        for i in range(nb):
+            block = d.get_block(i)
+
+            ncol = block.get_column_count()
+            nrow = block.get_point_count()
+
+            x_values = []
+            y_values = []
+
+            for j in range(nrow):
+                x_values.append(block.get_column(1).get_value(j))
+                y_values.append(block.get_column(2).get_value(j))
+
+            data.append(np.column_stack((x_values, y_values)))
+
+        # Convert the data to a numpy array with two columns
+        data_array = np.vstack(data)
+
+        return data_array        
 
     def save_as_np(self, path, col2, start, step, nstep):
         filename = os.path.basename(path)
@@ -409,10 +376,6 @@ class XRDApp(QMainWindow):
                     x = initial_theta + i * theta_step
                     x_values.append(x)
         
-        return x_values, y_values
- 
-    def handle_raw4_file(self, fileName, initial_theta=None, theta_step=None):
-        x_values, y_values = self.parse_raw4_file(fileName, initial_theta, theta_step)
         data = np.column_stack((x_values, y_values))
         return data
 
@@ -444,7 +407,7 @@ class XRDApp(QMainWindow):
         else:
             # If the user clicks "No", return None for both values
             return None, None
-    
+
     def import_temperatures(self):
         if not self.data:
             QMessageBox.warning(self, "No Data", "Please load XRD data before loading temperature data.")
@@ -453,13 +416,24 @@ class XRDApp(QMainWindow):
             file, _ = QFileDialog.getOpenFileName(self, 'Select Temperature Data File', '', 'Temperature Data File (*.txt)')
             if file:
                 try:
+                    # Preserve the current x and y limits
+                    current_xlim = self.ax.get_xlim()
+                    current_ylim = self.ax.get_ylim()
+
                     self.temperatures = np.loadtxt(file)
                     if len(self.temperatures.shape) != 1:
                         raise ValueError("Invalid temperature data format")
+
                     self.plot_data()
+
+                    # Restore the preserved x and y limits
+                    self.ax.set_xlim(current_xlim)
+                    self.ax.set_ylim(current_ylim)
+                    self.canvas.draw()
                 except ValueError as e:
                     print(f"Error loading {file}: {e}")
-                    QMessageBox.warning(self, "Invalid File", f"Error loading {file}: {e}")
+                    QMessageBox.warning(self, "Invalid File", f"Error loading {file}: {e}")    
+                    
     def rescale_plot(self):
         if self.data:
             all_x = np.concatenate([d[:, 0] for d in self.data])
@@ -558,22 +532,6 @@ class XRDApp(QMainWindow):
             self.toolbar.hover_action.setChecked(False)
             return
         self.hover_enabled = self.toolbar.hover_action.isChecked()
-
-    # def convert_file(self):
-    #     if not self.data:
-    #         QMessageBox.warning(self, "No Data", "No data available to convert.")
-    #         return
-        
-    #     for i, data in enumerate(self.data):
-    #         try:
-    #             file_name = os.path.splitext(self.fileNames[i])[0] + '_converted.txt'
-    #             with open(file_name, 'w') as f:
-    #                 for x, y in data:
-    #                     f.write(f"{x:.6f}\t{y:.6f}\n")
-    #             print(f"Converted {self.fileNames[i]} to {file_name}")
-    #         except Exception as e:
-    #             print(f"Error converting {self.fileNames[i]}: {e}")
-    #             QMessageBox.warning(self, "Conversion Error", f"Error converting {self.fileNames[i]}: {e}")
 
     def confirm_clear_data(self):
         if not self.data:

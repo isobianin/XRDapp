@@ -2,8 +2,18 @@
 
 <img src="media/icon_main.png" width="60px" class="center" align="left"/>
 
-XRDapp is a data visualisation tool that aims to streamline the workflow of X-ray diffraction (XRD) analysis. This project is developed for the Open University, School of Engineering and Innovation in collaboration with [James Bowen](https://www.linkedin.com/in/bowenjames/) and [Matthew Kershaw](https://www.linkedin.com/in/matt-kershaw-47634b57/). 
+XRDapp is a data visualisation tool that aims to streamline the workflow of X-ray diffraction (XRD) analysis. This project is developed for the Open University, School of Engineering and Innovation in collaboration with [James Bowen](https://www.linkedin.com/in/bowenjames/) and [Matthew Kershaw](https://www.linkedin.com/in/matt-kershaw-47634b57/).
+
+# Features
+- thanks to [xylib](https://github.com/wojdyr/xylib/tree/master), work with multiple common and obscure XRD file formats
+- portable .exe file can be used on many lab and personal machines
+- convert loaded files to .txt format so they can be opened and viewed elsewhere
+- load temperature values as a separate file to go hand-in-hand with the current data set
+- customise the viewing window (data points cursor, minor and major grids, change axis spacing values, change font size, etc.)
+
 # Supported file formats
+XRDapp uses the latest [xylib](https://github.com/wojdyr/xylib/tree/master) version compiled from the official repository. In other words, it is at least one commit ahead of the [pip](https://pypi.org/project/xylib-py/) and [fytik](https://github.com/wojdyr/fityk) xylib distribution. The key difference is that this locally compiled version partially supports [RAW4.0](https://github.com/wojdyr/xylib/commit/76c4bbce014b8b43fd8c3535c52c33c9c3018fbd) file format. Additionally, XRDapp has its own way of interpreting RAW4.0 files that are not recognised by [xylib](https://github.com/wojdyr/xylib/tree/master).
+
 XRDapp works with the following formats (powered by [xylib](https://github.com/wojdyr/xylib/tree/master)):
 - plain text, delimiter-separated values (e.g. CSV)
 - Crystallographic Information File for Powder Diffraction (pdCIF)
@@ -25,13 +35,8 @@ XRDapp works with the following formats (powered by [xylib](https://github.com/w
 - Ron Unwin's Spectra XPS format (VGX-900 compatible)
 - Freiberg Instruments XSYG (from lexsyg)
 - Bruker SPC/PAR
-# Features
-- thanks to [xylib](https://github.com/wojdyr/xylib/tree/master), work with multiple common and obscure XRD file formats
-- portable .exe file can be used on many lab and personal machines
-- convert loaded files to .txt format so they can be opened and viewed elsewhere
-- load temperature values as a separate file to go hand-in-hand with the current data set
-- customise the viewing window (data points cursor, minor and major grids, change axis spacing values, change font size, etc.)
-# Buttons
+
+# User interface
 <img src="media/mpl_home_large.png" width="24px" /> - Home: get back to the original view ([matplotlib](https://github.com/matplotlib/matplotlib) toolbar function)
 
 <img src="media/import-content.png" width="24px" /> - Import Data: when selected, navigate to the folder with data and select files to be loaded into XRDapp
@@ -74,11 +79,16 @@ Start using XRDapp by pressing <img src="media/import-content.png" width="24px" 
 
 [Samples folder](samples/) contains an example of temperature file and RAW4.0 file.
 
+Video demonstration of the basic XRDapp functionality:
+
+<video src='media/video/demo.mov'> 
+
 # Modifying code
 The code provided in this repository can be modified. It is important to note that to ensure that the code can run smoothly on your machine, you need to install [xylib](https://github.com/wojdyr/xylib/tree/master). After that, to build your own executable file, use the following command:
 ```bash
 pyinstaller --name XRDApp --onefile --windowed --icon=media\icon_main.ico --add-data "media;media" xrdapp.py
 ```
+
 # Credits
 Many thanks to:
 - the developers of [xylib](https://github.com/wojdyr/xylib) for providing quite a comprehensive tool for working with multiple XRD data formats
