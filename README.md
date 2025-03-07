@@ -81,7 +81,7 @@ Start using XRDapp by pressing <img src="media/import-content.png" width="24px" 
 
 Video demonstration of the basic XRDapp functionality:
 
-<video src='media/video/demo.mov'> 
+![](media/video/demo.gif)
 
 # Modifying code
 The code provided in this repository can be modified. It is important to note that to ensure that the code can run smoothly on your machine, you need to install [xylib](https://github.com/wojdyr/xylib/tree/master). After that, to build your own executable file, use the following command:
