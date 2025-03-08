@@ -70,14 +70,14 @@ XRDapp works with the following formats (powered by [xylib](https://github.com/w
 
 <img src="media/info-icon.png" width="24px" /> - App Info: information regarding the current version, developers and contact details
 
-<img src="media/convert-icon.png" width="24px" /> - Convert Data: convert the loaded data into .txt file. XRDapp will create a new folder in the same directory as the loaded files and place converted files in it
+<img src="media/convert-icon.png" width="24px" /> - Convert Data: convert the loaded data into .txt file. XRD data viewer will create a new folder in the same directory as the loaded files and place converted files in it
 
 <img src="media/clear-data-icon.png" width="24px" /> - Clear Data: clear the loaded data cache
 
 # Using XRDapp
 Start using XRDapp by pressing <img src="media/import-content.png" width="24px" /> and loading the data. When the data is loaded, you can browse through XRD curves with a help of up and down arrow buttons on your keyboard or by clicking the filename in the loaded files list window. Use <img src="media/temperature-low.png" width="24px" /> to load a .txt file with temperature values, which will be displayed above the viewing window. To zoom in to an area of interest, use <img src="media/mpl_zoom.png" width="24px" />. If the given curve has small intensity (y-axis value), press <img src="media/stretch-vertically.png" width="24px" /> to fit it to the screen. Pressing <img src="media/mpl_home_large.png" width="24px" /> automatically rescales everything back to the highest intensity among all loaded files. To convert loaded files into .txt file, press <img src="media/convert-icon.png" width="24px" />, which will create a folder called "XRDapp converted" in the folder where the data was loaded from. Press either <img src="media/clear-data-icon.png" width="24px" /> to clear the data or <img src="media/import-content.png" width="24px" /> to load different files.
 
-[Samples folder](samples/) contains an example of temperature file and RAW4.0 file.
+[Examples folder](examples/) contains an example of temperature file and RAW4.0 file.
 
 Video demonstration of the basic XRDapp functionality:
 

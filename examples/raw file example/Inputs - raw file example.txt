@@ -1,0 +1,6 @@
+Input 2Theta values
+
+Initial 2Theta (degrees): 20
+
+2Theta Step (degrees): 0.02
+

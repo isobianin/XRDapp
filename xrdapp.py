@@ -192,7 +192,7 @@ class XRDApp(QMainWindow):
         self.initUI()
         self.showMaximized()  # Start the application in full-screen mode
     def initUI(self):
-        self.setWindowTitle('XRD Data Viewer')
+        self.setWindowTitle('XRDapp')
         self.setGeometry(100, 100, 800, 600)
 
         central_widget = QWidget()
@@ -381,17 +381,17 @@ class XRDApp(QMainWindow):
 
     def prompt_for_theta_values(self):
         # Ask the user if they want to provide custom theta values
-        reply = QMessageBox.question(self, 'Custom Theta Values', 'Do you want to provide custom initial theta and theta step values?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        reply = QMessageBox.question(self, 'Custom 2Theta Values', 'Would you like to provide custom initial 2Theta and 2Theta step values?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         
         if reply == QMessageBox.Yes:
             # Create a dialog to input theta values
             dialog = QDialog(self)
-            dialog.setWindowTitle("Input Theta Values")
+            dialog.setWindowTitle("Input 2Theta Values")
             layout = QFormLayout(dialog)
             initial_theta_input = QLineEdit(dialog)
             theta_step_input = QLineEdit(dialog)
-            layout.addRow("Initial Theta:", initial_theta_input)
-            layout.addRow("Theta Step:", theta_step_input)
+            layout.addRow("Initial 2Theta (degrees):", initial_theta_input)
+            layout.addRow("2Theta Step (degrees):", theta_step_input)
             buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
             layout.addWidget(buttons)
             buttons.accepted.connect(dialog.accept)
@@ -473,7 +473,7 @@ class XRDApp(QMainWindow):
             if len(self.temperatures) > 0 and self.current_index < len(self.temperatures):
                 self.ax.set_title(f"Temperature: {self.temperatures[self.current_index]}°C")
             else:
-                self.ax.set_title("XRD Data")
+                self.ax.set_title("XRDapp - XRD Data Visualisation Tool")
             self.ax.set_xlabel("2θ") # Set x-axis title to "2θ"
             self.ax.set_ylabel("Intensity")
             if self.xlim and self.ylim:
@@ -665,7 +665,7 @@ class XRDApp(QMainWindow):
     def show_info(self):
         info_text = (
             "Developed for: the Open University, School of Engineering and Innovation.\n\n"
-            "Version: 1.3.0\n\n"
+            "Version: 1.3.1\n\n"
             "Developed by:\nIhor Sobianin\nJames Bowen\nMatthew Kershaw\n\n"
             "Contact: ihor.sobianin@open.ac.uk"
         )
