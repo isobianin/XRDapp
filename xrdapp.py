@@ -473,7 +473,7 @@ class XRDApp(QMainWindow):
             if len(self.temperatures) > 0 and self.current_index < len(self.temperatures):
                 self.ax.set_title(f"Temperature: {self.temperatures[self.current_index]}°C")
             else:
-                self.ax.set_title("XRDapp - XRD Data Visualisation Tool")
+                self.ax.set_title("XRDapp")
             self.ax.set_xlabel("2θ") # Set x-axis title to "2θ"
             self.ax.set_ylabel("Intensity")
             if self.xlim and self.ylim:
